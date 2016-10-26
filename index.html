@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <title>Main Window</title>
+    <meta charset="utf-8">
+
+    <style>
+      body {
+        margin: 5px;
+      }
+
+      .toolbar {
+        margin-top: 5px;
+      }
+
+      ui-select {
+        width: 120px;
+      }
+
+      .border {
+        position: relative;
+        border: 1px solid #000;
+      }
+    </style>
+
+    <script src="app://node_modules/mathbox/build/mathbox-bundle.js"></script>
+    <link rel="stylesheet" href="app://node_modules/mathbox/build/mathbox.css">
+
+    <script src="app://init.js"></script>
+  </head>
+
+  <body class="layout vertical">
+    <div class="border flex-1">
+      <div class="view fit"></div>
+    </div>
+
+    <div class="toolbar layout horizontal">
+      <ui-select id="select">
+        <option value="src/basic.js">Basic</option>
+        <option value="src/cube.js">Cube</option>
+        <option value="src/numerify.js">Numerify</option>
+        <option value="src/grid-2d.js">Grid-2D</option>
+      </ui-select>
+      <span class="flex-1"></span>
+      <ui-button id="reload" class="blue">Reload</ui-button>
+    </div>
+  </body>
+</html>

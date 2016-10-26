@@ -1,0 +1,8 @@
+{
+  "name": "mathbox-playground",
+  "version": "1.0.0",
+  "main": "app.js",
+  "dependencies": {
+    "mathbox": ""
+  }
+}
