@@ -7,25 +7,10 @@ document.addEventListener('readystatechange', () => {
     return;
   }
 
+  let viewEL = document.getElementById('view');
   let selectEL = document.getElementById('select');
   let reloadEL = document.getElementById('reload');
   let profile = null;
-
-  let mathbox = mathBox({
-    element: document.querySelector('.view'),
-    plugins: ['core', 'controls', 'cursor'],
-    controls: {
-      klass: THREE.OrbitControls,
-    },
-    camera: {
-      fov: 45
-    }
-  });
-
-  let three = mathbox.three;
-  three.controls.maxDistance = 100;
-  three.camera.position.set(2.5, 1, 2.5);
-  three.renderer.setClearColor(new THREE.Color(0x505050), 1.0);
 
   //
   window.requestAnimationFrame(() => {
@@ -70,6 +55,8 @@ document.addEventListener('readystatechange', () => {
   });
 
   function _exec ( path, reload ) {
+    _reset();
+
     path = Editor.url(`app://${path}`);
       if (reload) {
       delete require.cache[path];
@@ -77,8 +64,12 @@ document.addEventListener('readystatechange', () => {
 
     let fn = require(path);
     if (fn) {
-      fn(mathbox);
+      fn(window._mathbox);
     }
+
+    // clear caches
+    Electron.webFrame.clearCache();
+    // console.log(Electron.webFrame.getResourceUsage());
   }
 
   function _resize () {
@@ -88,5 +79,33 @@ document.addEventListener('readystatechange', () => {
       canvasEL.width = bcr.width;
       canvasEL.height = bcr.height;
     }
+  }
+
+  function _reset () {
+    console.clear();
+
+    if ( window._mathbox ) {
+      window._mathbox.stop();
+      window._mathbox = null;
+      Editor.UI.clear(viewEL);
+    }
+
+    let mathbox = mathBox({
+      element: viewEL,
+      plugins: ['core', 'controls', 'cursor'],
+      controls: {
+        klass: THREE.OrbitControls,
+      },
+      camera: {
+        fov: 45
+      }
+    });
+
+    let three = mathbox.three;
+    three.controls.maxDistance = 100;
+    three.camera.position.set(2.5, 1, 2.5);
+    three.renderer.setClearColor(new THREE.Color(0x505050), 1.0);
+
+    window._mathbox = mathbox;
   }
 });
